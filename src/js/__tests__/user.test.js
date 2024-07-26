@@ -1,16 +1,9 @@
-import { loadUser } from '../user';
-import { httpGet } from '../http';
+import getBuffer from '../getBuffer';
+import ArrayBufferConverter from '../converter';
 
-jest.mock('../http');
+const buffer = getBuffer();
 
-beforeEach(() => {
-  jest.resetAllMocks();
-});
-
-test('should call loadUser once', () => {
-  httpGet.mockReturnValue(JSON.stringify({}));
-
-  const response = loadUser(1);
-  expect(response).toEqual({});
-  expect(httpGet).toHaveBeenCalledWith('http://server:8080/users/1');
-});
+test('Make string', () => {
+  const arrayBufferView = ArrayBufferConverter.load(buffer);
+  expect(ArrayBufferConverter.toString(arrayBufferView)).toBe('{"data":{"user":{"id":1,"name":"Hitman","level":10}}}');
+})
